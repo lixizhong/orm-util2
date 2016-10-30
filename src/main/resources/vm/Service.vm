@@ -1,0 +1,11 @@
+package $servicePackage;
+
+import java.util.List;
+
+import $domainPackage.$domain;
+
+public interface $service {
+	public int insert($domain $domainEntity);
+
+	public int batchInsert(List<$domain> list);
+}
