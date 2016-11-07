@@ -29,12 +29,12 @@ public interface $dao {
 	public $domain loadByMap(@Param("sql") String sql, @Param("$domainEntity") Map<String, Object> map);
 	
 	/**
-	 * 使用$domain类型的参数查询，不分页
+	 * 使用$domain类型的参数查询
 	 */
 	public List<$domain> list(@Param("sql") String sql, @Param("$domainEntity") $domain $domainEntity);
 	
 	/**
-	 * 使用Map类型的参数查询，不分页
+	 * 使用Map类型的参数查询
 	 */
 	public List<$domain> listByMap(@Param("sql") String sql, @Param("$domainEntity") Map<String, Object> map);
 	
