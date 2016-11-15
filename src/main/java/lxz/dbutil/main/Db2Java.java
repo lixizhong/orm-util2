@@ -30,7 +30,9 @@ public class Db2Java {
 	//domain类前缀
 	private static final String domainPrefix = "";
 	//domain类后缀
-	private static final String domainSubfix = "Ex";
+	private static final String domainSubfix = "";
+    //表前缀，生成相关类时去掉
+    private static final String tablePrefix = "jw_";
 	
 	//基础包名
 	private static final String basePackage = "com.jd.jw.purchase";
@@ -66,14 +68,14 @@ public class Db2Java {
     private static String serviceImplDir = serviceDir + File.separatorChar + "impl";
     
     //数据连接字符串
-  	private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_purchase?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true"; 
-  	//private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_marketing?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true"; 
+  	private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_store?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
+  	//private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_purchase?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
+  	//private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_marketing?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
   	
     //要生成类文件的表格
   	private static final String[] tables = 
   			new String[]{
-  					"jw_process_so_rule",
-  					"jw_process_po_rule"
+  					"jw_group_partner"
   			};
 	
 	public static void main(String[] args) throws Exception {
@@ -96,9 +98,7 @@ public class Db2Java {
         	String name = table.getName();
         	
         	if(ArrayUtils.contains(tables, name)){
-        		
         		echo(name);
-        		
         		createJavaCode(table);
         	}
 		}
@@ -141,6 +141,7 @@ public class Db2Java {
 	 * @throws Exception
 	 */
 	public static void createJavaCode(Table table) throws Exception{
+
 		VelocityContext context = new VelocityContext();  
 		
 		context.put("domainPackage", domainPackage);
@@ -148,10 +149,10 @@ public class Db2Java {
 		context.put("daoPackage", daoPackage);
 		context.put("servicePackage", servicePackage);
 		context.put("serviceImplPackage", serviceImplPackage);
-		
+
 		context.put("table", table);
 		
-		String domain = domainPrefix + Util.pascalName(table.getName()) + domainSubfix;
+		String domain = domainPrefix + Util.pascalName(StringUtils.removeStart(table.getName(), tablePrefix)) + domainSubfix;
 		String domainEntity = StringUtils.lowerCase(StringUtils.substring(domain, 0, 1)) + StringUtils.substring(domain, 1);
 		
 		context.put("domain", domain);

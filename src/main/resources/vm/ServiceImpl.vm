@@ -13,7 +13,7 @@ import $domainPackage.$domain;
 @Service("$serviceEntity")
 public class $serviceImpl implements $service {
 
-    private static final Logger logger = LoggerFactory.getLogger(${serviceImpl}.class});
+    private static final Logger logger = LoggerFactory.getLogger(${serviceImpl}.class);
 
 	@Resource
 	private $dao $daoEntity;

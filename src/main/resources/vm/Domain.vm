@@ -15,13 +15,11 @@ public class ${domain} implements Serializable {
 	public static final String tableName = "`$table.name`";
 
 	#foreach($field in $table.fieldList)
-	/**
-	 * $!{field.comment}. 
-	 * Default: $!{field.defaultValue}
-	 */
-	private $util.javaTypeName($field.javaType)	$util.camelName($field.name);
-	
-	#end
+    /*
+      $!{field.comment}. Default: $!{field.defaultValue}
+    */
+	private $util.javaTypeName($field.javaType) $util.camelName($field.name);
+    #end
 	
 	public static abstract class Columns{
 		#foreach($field in $table.fieldList)
@@ -47,7 +45,9 @@ public class ${domain} implements Serializable {
 	public static abstract class Where{
 		#foreach($field in $table.fieldList)
 		public static final String $util.camelName($field.name)(String op){
-			return "`$field.name` " + op + " #{${domainEntity}.${util.camelName($field.name)}}";
+            StringBuilder builder = new StringBuilder();
+            builder.append("`$field.name`").append(" ").append(op).append(" ").append("#{${domainEntity}.${util.camelName($field.name)}}");
+			return builder.toString();
 		}
 		#end
 	}
@@ -67,7 +67,7 @@ public class ${domain} implements Serializable {
 	 * $!{field.comment}.
 	 * Default: $!{field.defaultValue}
 	 */
-	public $util.javaTypeName($field.javaType) $util.getMethodCode($field.name, $field.javaType){
+	public $util.javaTypeName($field.javaType) $util.getterMethodName($field.name, $field.javaType){
 		return $util.camelName($field.name);
 	}
 	
@@ -75,7 +75,7 @@ public class ${domain} implements Serializable {
 	 * $!{field.comment}. 
 	 * Default: $!{field.defaultValue}
 	 */
-	public void $util.setMethodCode($field.name, $field.javaType){
+	public void $util.setterMethodName($field.name, $field.javaType){
 		this.$util.camelName($field.name) = $util.camelName($field.name);
 	}
 	

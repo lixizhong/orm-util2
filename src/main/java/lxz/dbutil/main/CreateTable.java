@@ -27,9 +27,8 @@ public class CreateTable {
     	
     	System.out.println("CREATE TABLE `` (");
 		
-    	List<JSONObject> dataList = XlsReader.readXls("D:\\项目资料\\母婴三期\\数据字典3.1.4.xlsx", 0, 33, 53, cellList, new RowReader<JSONObject>() {
+    	List<JSONObject> dataList = XlsReader.readXls("D:\\项目资料\\母婴四期\\数据字典4.0.xlsx", 2, 2, 28, cellList, new RowReader<JSONObject>() {
 			public JSONObject getRowValue(Map<String, Object> cells) {
-				
 				String name = cells.get("name").toString();
 				String text = cells.get("text").toString();
 				String type = cells.get("type").toString();
@@ -40,7 +39,7 @@ public class CreateTable {
 				if("N".equals(isNull)){
 					isNull = "NOT NULL";
 				}else if("Y".equals(isNull)){
-					isNull = "\t";
+					isNull = " ";
 				}else{
 					throw new RuntimeException(name + "是否为空未指定");
 				}
@@ -54,12 +53,12 @@ public class CreateTable {
 						defaultValue = "DEFAULT NULL";
 					}
 				}
-				
-				System.out.println(
-					"`" + name + "`" 	+ "\t" + 
-					type 				+ "\t" + 
-					isNull 				+ "\t" + 
-					defaultValue 		+ "\t" + 
+
+                System.out.println(
+					String.format("%-22s", "`" + name + "`") 	+ "    " +
+                    String.format("%-12s", type)  				+ "    " +
+                    String.format("%-8s", isNull)  			+ "    " +
+                    String.format("%-12s", defaultValue )  		+ "    " +
 					"COMMENT '" + text + ":" + comment + "',");
 				
 				/*

@@ -35,8 +35,9 @@ public class Util {
 	public static String javaTypeName(Class<?> clazz){
 		return StringUtils.removeStart(clazz.getName(), "java.lang.");
 	}
-	
-	public static String setMethodCode(String name, Class<?> clazz){
+
+	//生成setter方法名称
+	public static String setterMethodName(String name, Class<?> clazz){
 		
 		if(clazz.equals(Boolean.class)){
 			name = StringUtils.removeStart(name, "is");
@@ -56,8 +57,9 @@ public class Util {
 		return "set" + methodNameSubfix
 			+ "("+ javaTypeName(clazz) +" " + propName + ")";
 	}
-	
-	public static String getMethodCode(String name, Class<?> clazz){
+
+    //生成getter方法名称
+	public static String getterMethodName(String name, Class<?> clazz){
 		String methodNamePrefix = "";
 		
 		if(clazz.equals(Boolean.class)){
