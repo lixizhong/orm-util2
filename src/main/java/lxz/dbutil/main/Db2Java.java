@@ -1,4 +1,5 @@
 package lxz.dbutil.main;
+
 import lxz.dbutil.util.SqlTypeMap;
 import lxz.dbutil.util.Util;
 import lxz.dbutil.util.orm.Field;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -23,21 +25,21 @@ import java.util.Properties;
 /**
  * 读取mysql数据库信息，根据数据表的信息生成mybatis使用的domain、dao、service、mapper等文件。
  * @author lixizhong
- *
  */
 public class Db2Java {
 	
 	//domain类前缀
 	private static final String domainPrefix = "";
 	//domain类后缀
-	private static final String domainSubfix = "";
+	private static final String domainSubfix = "Ex";
     //表前缀，生成相关类时去掉
-    private static final String tablePrefix = "jw_";
+    private static final String tablePrefix = "";
 	
 	//基础包名
-	private static final String basePackage = "com.jd.jw.purchase";
+	//private static final String basePackage = "com.jd.jw.store";
 	//private static final String basePackage = "com.jd.jw.marketing";
-	
+	private static final String basePackage = "com.jd.jw.purchase";
+
 	//domain类包名
 	private static final String domainDirName = "domain";
 	//dao包名
@@ -68,14 +70,14 @@ public class Db2Java {
     private static String serviceImplDir = serviceDir + File.separatorChar + "impl";
     
     //数据连接字符串
-  	private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_store?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
-  	//private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_purchase?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
+  	//private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_store?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
+  	private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_purchase?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
   	//private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_marketing?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
   	
     //要生成类文件的表格
   	private static final String[] tables = 
   			new String[]{
-  					"jw_group_partner"
+  					"jw_bd_store_clerk_order_detail"
   			};
 	
 	public static void main(String[] args) throws Exception {
@@ -163,7 +165,8 @@ public class Db2Java {
 		context.put("service", domain + "Service");
 		context.put("serviceImpl", domain + "ServiceImpl");
 		context.put("serviceEntity", domainEntity + "Service");
-		
+        context.put("now", new SimpleDateFormat("yyyy/M/d H:m:s").format(new java.util.Date()));
+
 		context.put("util", Util.class);
 		context.put("strUtil", StringUtils.class);
 		
@@ -202,9 +205,9 @@ public class Db2Java {
 	 * @return
 	 * @throws SQLException
 	 */
-	public static List<Table> loadTableList(Connection conn) throws SQLException{
+	public static List<Table> loadTableList(Connection conn) throws SQLException {
 		
-		DatabaseMetaData dbMeta = conn.getMetaData();  
+		DatabaseMetaData dbMeta = conn.getMetaData();
         
 		echo("数据库：" + dbMeta.getDatabaseProductName() + " " + dbMeta.getDatabaseProductVersion());//获取数据库产品名称  
 		echo("驱动版本：" + dbMeta.getDriverVersion());//获取驱动版本  

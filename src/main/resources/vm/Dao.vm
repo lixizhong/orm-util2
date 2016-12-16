@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Param;
 
 import $domainPackage.$domain;
 
+/**
+* created by lixizhong, at ${now}.
+*/
 public interface $dao {
 
 	/**
@@ -27,6 +30,12 @@ public interface $dao {
 	 * 使用Map类型的参数select单条数据，如果不能确保查询条件只返回1条数据，请调用SqlSelect的limit(1)方法
 	 */
 	public $domain loadByMap(@Param("sql") String sql, @Param("$domainEntity") Map<String, Object> map);
+
+    /**
+    * 使用$domain和Map类型的参数select单条数据，如果不能确保查询条件只返回1条数据，请调用SqlSelect的limit(1)方法
+    */
+    public $domain loadByEntityAndMap(@Param("sql") String sql,  @Param("$domainEntity") $domain $domainEntity,
+                                            @Param("${domainEntity}Map") Map<String, Object> map);
 	
 	/**
 	 * 使用$domain类型的参数查询
@@ -37,16 +46,28 @@ public interface $dao {
 	 * 使用Map类型的参数查询
 	 */
 	public List<$domain> listByMap(@Param("sql") String sql, @Param("$domainEntity") Map<String, Object> map);
+
+    /**
+    * 使用$domain和Map类型的参数查询
+    */
+    public List<$domain> listByEntityAndMap(@Param("sql") String sql, @Param("$domainEntity") $domain $domainEntity,
+                                                @Param("${domainEntity}Map") Map<String, Object> map);
 	
 	/**
 	 * 使用$domain类型的参数查询符合条件的记录条数
 	 */
 	public int count(@Param("sql") String sql, @Param("$domainEntity") $domain $domainEntity);
+
+    /**
+    * 使用Map类型的参数查询符合条件的记录条数
+    */
+    public int countByMap(@Param("sql") String sql, @Param("$domainEntity") Map<String, Object> map);
 	
 	/**
-	 * 使用Map类型的参数查询符合条件的记录条数
+	 * 使用$domain和Map类型的参数查询符合条件的记录条数
 	 */
-	public int countByMap(@Param("sql") String sql, @Param("$domainEntity") Map<String, Object> map);
+	public int countByEntityAndMap(@Param("sql") String sql, @Param("$domainEntity") $domain $domainEntity,
+                                                @Param("${domainEntity}Map") Map<String, Object> map);
 	
 	/**
 	 * 使用$domain类型的参数更新
@@ -57,6 +78,12 @@ public interface $dao {
 	 * 使用Map类型的参数更新
 	 */
 	public int updateByMap(@Param("sql") String sql, @Param("$domainEntity") Map<String, Object> map);
+
+    /**
+    * 使用$domain和Map类型的参数更新
+    */
+    public int updateByEntityAndMap(@Param("sql") String sql, @Param("$domainEntity") $domain $domainEntity,
+                                                @Param("${domainEntity}Map") Map<String, Object> map);
 	
 	/**
 	 * 使用$domain类型的参数删除
@@ -67,5 +94,11 @@ public interface $dao {
 	 * 使用Map类型的参数删除
 	 */
 	public int deleteByMap(@Param("sql") String sql, @Param("$domainEntity") Map<String, Object> map);
+
+    /**
+    * 使用$domain和Map类型的参数删除
+    */
+    public int deleteByEntityAndMap(@Param("sql") String sql, @Param("$domainEntity") $domain $domainEntity,
+                                                @Param("${domainEntity}Map") Map<String, Object> map);
 	
 }

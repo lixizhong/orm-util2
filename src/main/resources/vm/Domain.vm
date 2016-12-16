@@ -2,7 +2,12 @@ package ${domainPackage};
 
 #if($table.comment != "")
 /**
+ * created by lixizhong, at ${now}.
  * $table.comment
+ */
+#else
+/**
+ * created by lixizhong, at ${now}.
  */
 #end
 
@@ -12,62 +17,69 @@ public class ${domain} implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+    #* 表名 *#
 	public static final String tableName = "`$table.name`";
+    public static final String instanceName = "${domainEntity}";
+    public static final String mapName = "${domainEntity}Map";
 
+    #* 属性列表 *#
 	#foreach($field in $table.fieldList)
-    /*
-      $!{field.comment}. Default: $!{field.defaultValue}
-    */
+    /**
+     * $!{field.comment}. Default: $!{field.defaultValue}
+     */
 	private $util.javaTypeName($field.javaType) $util.camelName($field.name);
     #end
-	
-	public static abstract class Columns{
+    #* 数据库字段名（带表名前缀） *#
+	public static abstract class Columns {
 		#foreach($field in $table.fieldList)
-		public static final String $util.camelName($field.name) = "`$field.name`";
+		public static final String $util.camelName($field.name) = "`$table.name`.`$field.name`";
 		#end
 		
 		public static final String All = 
-			"#foreach($field in $table.fieldList)#if($foreach.index>0), #end`$field.name`#end";
+			"#foreach($field in $table.fieldList)#if($foreach.index>0), #end`$table.name`.`$field.name`#end";
 	}
-	
-	public static abstract class MapKeys{
+    #* 数据库字段名（不带表名前缀） *#
+    public static abstract class PureColumns {
+        #foreach($field in $table.fieldList)
+        public static final String $util.camelName($field.name) = "`$field.name`";
+        #end
+
+        public static final String All =
+            "#foreach($field in $table.fieldList)#if($foreach.index>0), #end`$field.name`#end";
+    }
+    #* 属性名称（用作map的key） *#
+	public static abstract class MapKeys {
 		#foreach($field in $table.fieldList)
 		public static final String $util.camelName($field.name) = "$util.camelName($field.name)";
 		#end
 	}
-	
-	public static abstract class Updates{
+    #* 更新字段名 *#
+	public static abstract class Updates {
 		#foreach($field in $table.fieldList)
 		public static final String $util.camelName($field.name) = "`$field.name` = #{${domainEntity}.${util.camelName($field.name)}}";
 		#end
 	}
-	
-	public static abstract class Where{
+    #* where条件 *#
+	public static abstract class Where {
 		#foreach($field in $table.fieldList)
 		public static final String $util.camelName($field.name)(String op){
-            StringBuilder builder = new StringBuilder();
-            builder.append("`$field.name`").append(" ").append(op).append(" ").append("#{${domainEntity}.${util.camelName($field.name)}}");
-			return builder.toString();
+            return String.format("%s %s %s", "`$table.name`.`$field.name`", op, "#{${domainEntity}.${util.camelName($field.name)}}");
 		}
 		#end
 	}
-	
-	public static abstract class And extends Where{ }
-	
-	public static abstract class Or extends Where{ }
-	
-	public static abstract class OrderBy{
-		#foreach($field in $table.fieldList)
-		public static final String $util.camelName($field.name) = "`$field.name`";
-		#end
-	}
-	
+    #* and条件 *#
+	public static abstract class And extends Where {}
+    #* or条件 *#
+	public static abstract class Or extends Where {}
+    #* orderby字段 *#
+	public static abstract class OrderBy extends Columns {}
+	#* get set 方法 *#
 	#foreach($field in $table.fieldList)
 	/**
 	 * $!{field.comment}.
 	 * Default: $!{field.defaultValue}
 	 */
-	public $util.javaTypeName($field.javaType) $util.getterMethodName($field.name, $field.javaType){
+	public $util.javaTypeName($field.javaType) $util.getterMethodName($field.name, $field.javaType) {
 		return $util.camelName($field.name);
 	}
 	
@@ -75,7 +87,7 @@ public class ${domain} implements Serializable {
 	 * $!{field.comment}. 
 	 * Default: $!{field.defaultValue}
 	 */
-	public void $util.setterMethodName($field.name, $field.javaType){
+	public void $util.setterMethodName($field.name, $field.javaType) {
 		this.$util.camelName($field.name) = $util.camelName($field.name);
 	}
 	

@@ -53,6 +53,10 @@
 	<select id="loadByMap" resultMap="$resultMap">
 		${sql}
 	</select>
+
+    <select id="loadByEntityAndMap" resultMap="$resultMap">
+        ${sql}
+    </select>
 	
 	<select id="list" resultMap="$resultMap">
 		${sql}
@@ -61,6 +65,10 @@
 	<select id="listByMap" resultMap="$resultMap">
 		${sql}
 	</select>
+
+    <select id="listByEntityAndMap" resultMap="$resultMap">
+        ${sql}
+    </select>
 	
 	<select id="count" resultType="int">
 		${sql}
@@ -70,6 +78,10 @@
 		${sql}
 	</select>
 
+    <select id="countByEntityAndMap" resultType="int">
+        ${sql}
+    </select>
+
 	<update id="update">
 		${sql}
 	</update>
@@ -77,6 +89,10 @@
 	<update id="updateByMap">
 		${sql}
 	</update>
+
+    <update id="updateByEntityAndMap">
+        ${sql}
+    </update>
 	
 	<delete id="delete">
 		${sql}
@@ -85,4 +101,8 @@
 	<delete id="deleteByMap">
 		${sql}
 	</delete>
+
+    <delete id="deleteByEntityAndMap">
+        ${sql}
+    </delete>
 </mapper>

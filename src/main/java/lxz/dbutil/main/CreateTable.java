@@ -27,7 +27,7 @@ public class CreateTable {
     	
     	System.out.println("CREATE TABLE `` (");
 		
-    	List<JSONObject> dataList = XlsReader.readXls("D:\\项目资料\\母婴四期\\数据字典4.0.xlsx", 2, 2, 28, cellList, new RowReader<JSONObject>() {
+    	List<JSONObject> dataList = XlsReader.readXls("D:\\项目资料\\母婴四期\\数据字典4.0.xlsx", 0, 3, 17, cellList, new RowReader<JSONObject>() {
 			public JSONObject getRowValue(Map<String, Object> cells) {
 				String name = cells.get("name").toString();
 				String text = cells.get("text").toString();
