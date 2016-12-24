@@ -1,4 +1,4 @@
-package sql;
+package lxz.dbutil.sql;
 
 public class SqlDelete extends SqlWhere<SqlDelete> {
 	public SqlDelete(String tableName) {

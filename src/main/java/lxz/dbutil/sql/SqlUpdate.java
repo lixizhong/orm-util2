@@ -1,4 +1,4 @@
-package sql;
+package lxz.dbutil.sql;
 
 
 public class SqlUpdate extends SqlColumn<SqlUpdate> {

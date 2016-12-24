@@ -1,4 +1,4 @@
-package sql;
+package lxz.dbutil.sql;
 
 import java.io.Serializable;
 import java.util.ArrayList;

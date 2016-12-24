@@ -1,4 +1,4 @@
-package sql;
+package lxz.dbutil.sql;
 
 import java.util.LinkedList;
 import java.util.List;
