@@ -7,7 +7,7 @@ import java.util.ListIterator;
 /**
  * Sql基础类:包含设置查询或者更新列功能，Created by lixizhong on 2016/12/22.
  */
-public abstract class SqlColumn<T extends SqlColumn> extends SqlWhere<T>{
+abstract class SqlColumn<T extends SqlColumn> extends SqlWhere<T>{
     //保存要查询或者更新的列，仅SqlSelect、SqlUpdate使用
     protected List<String> columnList = new LinkedList<String>();
 

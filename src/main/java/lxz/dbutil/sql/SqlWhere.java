@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Sql基础类:包含查询条件功能，Created by lixizhong on 2016/12/22.
  */
-public abstract class SqlWhere<T extends SqlWhere> {
+abstract class SqlWhere<T extends SqlWhere> {
     //表名
     protected String tableName;
 
@@ -150,6 +150,7 @@ public abstract class SqlWhere<T extends SqlWhere> {
     }
 
     /**
+     * <pre>
      * 生成sql比较表达式,对于给定的字段和值以及比较字符，生成比较表达式，并将value存入clauseValueMap
      * 例如，给定参数为("id", "=", 1)，则结果如下：
      * 生成的sql表达式: id = #{sql.clauseValueMap.id}
@@ -158,6 +159,7 @@ public abstract class SqlWhere<T extends SqlWhere> {
      * 例如，给定参数为("id", "in", {1,2,3})，结果如下：
      * 生成的sql表达式为：id in (#{sql.clauseValueMap.id_list_0}, #{sql.clauseValueMap.id_list_1}, #{sql.clauseValueMap.id_list_2})
      * clauseValueMap保存：clauseValueMap.put("id_list_0", 1)  .put("id_list_1", 2) .put("id_list_2", 3)
+     * </pre>
      */
     private void generateCompareExpression(String column, String comparator, Object value) {
         if(StringUtils.isBlank(column) || StringUtils.isBlank(comparator)) {

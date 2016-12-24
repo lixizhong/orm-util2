@@ -1,8 +1,6 @@
 package sql;
 
 
-import static sql.StringUtils.join;
-
 public class SqlUpdate extends SqlColumn<SqlUpdate> {
     /**
      * 构造函数，指定表名
@@ -45,7 +43,7 @@ public class SqlUpdate extends SqlColumn<SqlUpdate> {
 		builder.append("update ");
 		builder.append(tableName);
 		builder.append(" set ");
-		builder.append(join(columnList, ", "));
+		builder.append(StringUtils.join(columnList, ", "));
 		builder.append(" ");
 		builder.append(whereBuilder.toString());
 		

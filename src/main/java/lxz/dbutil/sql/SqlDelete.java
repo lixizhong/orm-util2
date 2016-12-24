@@ -4,7 +4,7 @@ public class SqlDelete extends SqlWhere<SqlDelete> {
 	public SqlDelete(String tableName) {
 		super(tableName);
 	}
-	
+
     /**
      * 输出sql语句
      */

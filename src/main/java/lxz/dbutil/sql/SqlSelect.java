@@ -3,9 +3,6 @@ package sql;
 import java.util.LinkedList;
 import java.util.List;
 
-import static sql.StringUtils.isAny;
-
-
 public class SqlSelect extends SqlColumn<SqlSelect> {
     /**
      * Join类：处理表关联
@@ -90,7 +87,7 @@ public class SqlSelect extends SqlColumn<SqlSelect> {
 
         column = column.trim();
 
-        if( ! StringUtils.isBlank(orderType) && ! isAny(orderType, orderTypes)){
+        if( ! StringUtils.isBlank(orderType) && ! StringUtils.isAny(orderType, orderTypes)){
             throw new IllegalArgumentException(String.format("不支持的排序类型: %s", orderType));
         }
 
