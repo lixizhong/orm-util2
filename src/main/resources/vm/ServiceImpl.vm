@@ -25,7 +25,7 @@ public class $serviceImpl implements $service {
 		return ${daoEntity}.insert($domainEntity);
 	}
 
-	public int batchInsert(List<$domain> list) {
-		return ${daoEntity}.batchInsert(list);
-	}
+	//public int batchInsert(List<$domain> list) {
+	//	return ${daoEntity}.batchInsert(list);
+	//}
 }

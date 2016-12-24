@@ -19,8 +19,6 @@ public class ${domain} implements Serializable {
 
     #* 表名 *#
 	public static final String tableName = "`$table.name`";
-    public static final String instanceName = "${domainEntity}";
-    public static final String mapName = "${domainEntity}Map";
 
     #* 属性列表 *#
 	#foreach($field in $table.fieldList)
@@ -47,8 +45,8 @@ public class ${domain} implements Serializable {
         public static final String All =
             "#foreach($field in $table.fieldList)#if($foreach.index>0), #end`$field.name`#end";
     }
-    #* 属性名称（用作map的key） *#
-	public static abstract class MapKeys {
+    #* 属性名称 *#
+	public static abstract class Props {
 		#foreach($field in $table.fieldList)
 		public static final String $util.camelName($field.name) = "$util.camelName($field.name)";
 		#end
@@ -71,8 +69,7 @@ public class ${domain} implements Serializable {
 	public static abstract class And extends Where {}
     #* or条件 *#
 	public static abstract class Or extends Where {}
-    #* orderby字段 *#
-	public static abstract class OrderBy extends Columns {}
+
 	#* get set 方法 *#
 	#foreach($field in $table.fieldList)
 	/**

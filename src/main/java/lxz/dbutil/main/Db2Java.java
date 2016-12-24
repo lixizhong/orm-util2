@@ -77,7 +77,8 @@ public class Db2Java {
     //要生成类文件的表格
   	private static final String[] tables = 
   			new String[]{
-  					"jw_bd_store_clerk_order_detail"
+  					"jw_rebate_price",
+                    "jw_rebate_price_detail"
   			};
 	
 	public static void main(String[] args) throws Exception {

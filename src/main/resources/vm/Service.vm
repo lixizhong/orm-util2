@@ -8,7 +8,6 @@ import $domainPackage.$domain;
 * created by lixizhong, at ${now}.
 */
 public interface $service {
-	public int insert($domain $domainEntity);
-
-	public int batchInsert(List<$domain> list);
+	int insert($domain $domainEntity);
+	//int batchInsert(List<$domain> list);
 }

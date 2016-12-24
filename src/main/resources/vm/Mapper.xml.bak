@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${daoPackage}.${dao}">
-	<resultMap id="$resultMap" type="$domain">		
+	<resultMap id="$resultMap" type="$domain">
 		#foreach($field in $table.fieldList)
 		#if($strUtil.equalsIgnoreCase($field.name, "id"))
 		<id property="$util.camelName($field.name)" column="$field.name" javaType="$field.javaType.name"/>
 		#else
 		<result property="$util.camelName($field.name)" column="$field.name" javaType="$field.javaType.name" />
 		#end
-		#end				
+		#end
 	</resultMap>
-	
+
 	<sql id="${domainEntity}Columns">
 		#foreach($field in $table.fieldList)
 		`${field.name}`#if($foreach.hasNext),#end$!{empty}
 		#end
 	</sql>
-	
+
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="$domain">
 		insert into `$table.name` (
 		<trim suffixOverrides=",">
@@ -32,11 +32,11 @@
 		</trim>
 		)
 	</insert>
-	
+
 	<insert id="batchInsert" parameterType="$domain">
 		insert into `$table.name` (
 			<include refid="${domainEntity}Columns"/>
-		) values 
+		) values
 		<foreach item="$domainEntity" collection="list" separator=",">
 		(
         #foreach($field in $table.fieldList)
@@ -45,32 +45,64 @@
 		)
 		</foreach>
 	</insert>
-	
+
 	<select id="load" resultMap="$resultMap">
 		${sql}
 	</select>
-	
-	<select id="loadMap" resultType="Map">
+
+	<select id="loadByMap" resultMap="$resultMap">
 		${sql}
 	</select>
+
+    <select id="loadByEntityAndMap" resultMap="$resultMap">
+        ${sql}
+    </select>
 
 	<select id="list" resultMap="$resultMap">
 		${sql}
 	</select>
-	
-	<select id="listMap" resultType="Map">
+
+	<select id="listByMap" resultMap="$resultMap">
 		${sql}
 	</select>
-	
+
+    <select id="listByEntityAndMap" resultMap="$resultMap">
+        ${sql}
+    </select>
+
 	<select id="count" resultType="int">
 		${sql}
 	</select>
 
+	<select id="countByMap" resultType="int">
+		${sql}
+	</select>
+
+    <select id="countByEntityAndMap" resultType="int">
+        ${sql}
+    </select>
+
 	<update id="update">
 		${sql}
 	</update>
-	
+
+	<update id="updateByMap">
+		${sql}
+	</update>
+
+    <update id="updateByEntityAndMap">
+        ${sql}
+    </update>
+
 	<delete id="delete">
 		${sql}
 	</delete>
+
+	<delete id="deleteByMap">
+		${sql}
+	</delete>
+
+    <delete id="deleteByEntityAndMap">
+        ${sql}
+    </delete>
 </mapper>
