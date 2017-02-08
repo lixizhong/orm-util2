@@ -11,8 +11,8 @@ import javax.annotation.Resource;
 import $domainPackage.$domain;
 
 /**
-* created by lixizhong, at ${now}.
-*/
+ * created by lixizhong, at ${now}.
+ */
 @Service("$serviceEntity")
 public class $serviceImpl implements $service {
 

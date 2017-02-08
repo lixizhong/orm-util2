@@ -5,8 +5,8 @@ import java.util.List;
 import $domainPackage.$domain;
 
 /**
-* created by lixizhong, at ${now}.
-*/
+ * created by lixizhong, at ${now}.
+ */
 public interface $service {
 	int insert($domain $domainEntity);
 	//int batchInsert(List<$domain> list);

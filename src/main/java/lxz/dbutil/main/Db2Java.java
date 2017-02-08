@@ -27,18 +27,31 @@ import java.util.Properties;
  * @author lixizhong
  */
 public class Db2Java {
-	
-	//domain类前缀
-	private static final String domainPrefix = "";
-	//domain类后缀
-	private static final String domainSubfix = "Ex";
+	//基础包名
+	private static final String basePackage = "com.jd.jw.store";
+	//private static final String basePackage = "com.jd.jw.marketing";
+	//private static final String basePackage = "com.jd.jw.purchase";
+
+    //数据连接字符串
+    //store
+    private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_store?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
+    //purchase
+    //private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_purchase?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
+    //marketing
+    //private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_marketing?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
+
+    //要生成类文件的表格
+    private static final String[] tables =
+            new String[]{
+                    "jw_store_area_info"
+            };
+
+    //domain类前缀
+    private static final String domainPrefix = "";
+    //domain类后缀
+    private static final String domainSubfix = "";
     //表前缀，生成相关类时去掉
     private static final String tablePrefix = "";
-	
-	//基础包名
-	//private static final String basePackage = "com.jd.jw.store";
-	//private static final String basePackage = "com.jd.jw.marketing";
-	private static final String basePackage = "com.jd.jw.purchase";
 
 	//domain类包名
 	private static final String domainDirName = "domain";
@@ -68,21 +81,9 @@ public class Db2Java {
 	private static final String serviceImplPackage = basePackage + "." + serviceDirName + ".impl";
     private static String serviceDir = codeDirName + File.separatorChar + servicePackage.replace('.', File.separatorChar);
     private static String serviceImplDir = serviceDir + File.separatorChar + "impl";
-    
-    //数据连接字符串
-  	//private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_store?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
-  	private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_purchase?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
-  	//private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_marketing?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
-  	
-    //要生成类文件的表格
-  	private static final String[] tables = 
-  			new String[]{
-  					"jw_rebate_price",
-                    "jw_rebate_price_detail"
-  			};
-	
+
 	public static void main(String[] args) throws Exception {
-		echo(url);
+		log("数据库连接字符串：" + url);
 		
 		Properties props = new Properties();
 		
@@ -94,19 +95,17 @@ public class Db2Java {
         List<Table> tableList = loadTableList(conn);
         
         initVelocity();
-        
         createDirs();
         
         for (Table table : tableList) {
         	String name = table.getName();
         	
         	if(ArrayUtils.contains(tables, name)){
-        		echo(name);
         		createJavaCode(table);
         	}
 		}
         
-        echo("finished!");
+        log("finished!");
 	}
 	
 	/**
@@ -114,11 +113,16 @@ public class Db2Java {
 	 * @throws IOException
 	 */
 	public static void createDirs() throws IOException{
+        log("删除目录: " + codeDirName);
 		FileUtils.deleteQuietly(new File(codeDirName));
-		
+
+        log("创建目录: " + domainDir);
 		FileUtils.forceMkdir(new File(domainDir));
+        log("创建目录: " + daoDir);
 		FileUtils.forceMkdir(new File(daoDir));
+        log("创建目录: " + mapperDir);
 		FileUtils.forceMkdir(new File(mapperDir));
+        log("创建目录: " + serviceImplDir);
 		FileUtils.forceMkdir(new File(serviceImplDir));
 	}
 	
@@ -145,6 +149,8 @@ public class Db2Java {
 	 */
 	public static void createJavaCode(Table table) throws Exception{
 
+        log("创建表["+table.getName()+"]的文件：");
+
 		VelocityContext context = new VelocityContext();  
 		
 		context.put("domainPackage", domainPackage);
@@ -170,12 +176,23 @@ public class Db2Java {
 
 		context.put("util", Util.class);
 		context.put("strUtil", StringUtils.class);
-		
+
+        log("\t生成domain");
 		createCode(table, context, "vm/Domain.vm", domainDir + File.separatorChar + domain + ".java");
+        log("\t生成domain, 完成");
+        log("\t生成dao");
 		createCode(table, context, "vm/Dao.vm", daoDir + File.separatorChar + domain + "Dao.java");
+        log("\t生成dao, 完成");
+        log("\t生成mapper");
 		createCode(table, context, "vm/Mapper.vm.xml", mapperDir + File.separatorChar + domain + "Mapper.xml");
+        log("\t生成mapper, 完成");
+        log("\t生成service");
 		createCode(table, context, "vm/Service.vm", serviceDir + File.separatorChar + domain + "Service.java");
+        log("\t生成service, 完成");
+        log("\t生成service实现类");
 		createCode(table, context, "vm/ServiceImpl.vm", serviceImplDir + File.separatorChar + domain + "ServiceImpl.java");
+        log("\t生成service实现类, 完成");
+        log("表["+table.getName()+"]的文件完成\r\n");
 	}
 	
 	/**
@@ -210,10 +227,10 @@ public class Db2Java {
 		
 		DatabaseMetaData dbMeta = conn.getMetaData();
         
-		echo("数据库：" + dbMeta.getDatabaseProductName() + " " + dbMeta.getDatabaseProductVersion());//获取数据库产品名称  
-		echo("驱动版本：" + dbMeta.getDriverVersion());//获取驱动版本  
+		log("数据库：" + dbMeta.getDatabaseProductName() + " " + dbMeta.getDatabaseProductVersion());//获取数据库产品名称
+		log("驱动版本：" + dbMeta.getDriverVersion());//获取驱动版本
 		
-		echo("================================================================================================================================="); 
+		log("=================================================================================================================================");
 		
 		//参数列表 1:类别名称,2: 模式名称的模式,3:表名称模式,4:要包括的表类型所组成的列表
 		ResultSet rs = dbMeta.getTables(null, null, null, new String[]{"TABLE"});
@@ -269,7 +286,7 @@ public class Db2Java {
 		return tableList;
 	}
 	
-	private static void echo(String string){
+	private static void log(String string){
 		System.out.println(string);
 	}
 	

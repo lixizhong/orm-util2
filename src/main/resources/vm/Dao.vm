@@ -1,5 +1,9 @@
 package $daoPackage;
 
+import com.jd.jw.skeleton.util.sql2.SqlSelect;
+import com.jd.jw.skeleton.util.sql2.SqlUpdate;
+import com.jd.jw.skeleton.util.sql2.SqlDelete;
+
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.Param;
@@ -7,8 +11,8 @@ import org.apache.ibatis.annotations.Param;
 import $domainPackage.$domain;
 
 /**
-* created by lixizhong, at ${now}.
-*/
+ * created by lixizhong, at ${now}.
+ */
 public interface $dao {
 	/**
 	 * 插入单条数据，并将生成的ID set到bean中
