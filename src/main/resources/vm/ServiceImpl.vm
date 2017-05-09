@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import $servicePackage.${service};
 import $daoPackage.$dao;
 import javax.annotation.Resource;
+import org.apache.commons.collections4.CollectionUtils;
 
 import $domainPackage.$domain;
 
@@ -26,6 +27,9 @@ public class $serviceImpl implements $service {
 	}
 
 	//public int batchInsert(List<$domain> list) {
+    //  if( CollectionUtils.isEmpty(list) ) {
+    //      return  0;
+    //  }
 	//	return ${daoEntity}.batchInsert(list);
 	//}
 }

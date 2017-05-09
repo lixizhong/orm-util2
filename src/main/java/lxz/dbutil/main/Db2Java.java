@@ -28,22 +28,22 @@ import java.util.Properties;
  */
 public class Db2Java {
 	//基础包名
-	private static final String basePackage = "com.jd.jw.store";
-	//private static final String basePackage = "com.jd.jw.marketing";
+	//private static final String basePackage = "com.jd.jw.store";
+	private static final String basePackage = "com.jd.jw.marketing";
 	//private static final String basePackage = "com.jd.jw.purchase";
 
     //数据连接字符串
     //store
-    private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_store?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
+    //private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_store?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
     //purchase
     //private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_purchase?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
     //marketing
-    //private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_marketing?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
+    private static final String url = "jdbc:mysql://192.168.166.17:3306/jw_marketing?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
 
     //要生成类文件的表格
     private static final String[] tables =
             new String[]{
-                    "jw_store_area_info"
+                    "jw_jos_user"
             };
 
     //domain类前缀
@@ -172,7 +172,7 @@ public class Db2Java {
 		context.put("service", domain + "Service");
 		context.put("serviceImpl", domain + "ServiceImpl");
 		context.put("serviceEntity", domainEntity + "Service");
-        context.put("now", new SimpleDateFormat("yyyy/M/d H:m:s").format(new java.util.Date()));
+        context.put("now", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()));
 
 		context.put("util", Util.class);
 		context.put("strUtil", StringUtils.class);

@@ -1,15 +1,11 @@
 package ${domainPackage};
 
-#if($table.comment != "")
 /**
  * created by lixizhong, at ${now}.
+ #if($table.comment)
  * $table.comment
+ #end
  */
-#else
-/**
- * created by lixizhong, at ${now}.
- */
-#end
 
 import java.io.Serializable;
 
@@ -23,7 +19,7 @@ public class ${domain} implements Serializable {
     #* 属性列表 *#
 	#foreach($field in $table.fieldList)
     /**
-     * $!{field.comment}. Default: $!{field.defaultValue}
+     * $!{field.comment}  #if(${field.defaultValue})默认值: ${field.defaultValue}#end $!{empty}
      */
 	private $util.javaTypeName($field.javaType) $util.camelName($field.name);
     #end
@@ -33,8 +29,14 @@ public class ${domain} implements Serializable {
 		public static final String $util.camelName($field.name) = "`$table.name`.`$field.name`";
 		#end
 		
-		public static final String All = 
-			"#foreach($field in $table.fieldList)#if($foreach.index>0), #end`$table.name`.`$field.name`#end";
+		public static final String All =
+			#foreach($field in $table.fieldList)
+                #if($foreach.hasNext)
+                "`$table.name`.`$field.name`, " +
+                #else
+                "`$table.name`.`$field.name`";
+                #end
+            #end
 	}
     #* 数据库字段名（不带表名前缀） *#
     public static abstract class PureColumns {
@@ -43,7 +45,13 @@ public class ${domain} implements Serializable {
         #end
 
         public static final String All =
-            "#foreach($field in $table.fieldList)#if($foreach.index>0), #end`$field.name`#end";
+            #foreach($field in $table.fieldList)
+                #if($foreach.hasNext)
+                "`$field.name`, " +
+                #else
+                "`$field.name`";
+                #end
+            #end
     }
     #* 属性名称 *#
 	public static abstract class Props {
@@ -58,31 +66,31 @@ public class ${domain} implements Serializable {
 		#end
 	}
     #* where条件 *#
-	public static abstract class Where {
+	public static abstract class Comparations {
 		#foreach($field in $table.fieldList)
-		public static final String $util.camelName($field.name)(String op){
-            return String.format("%s %s %s", "`$table.name`.`$field.name`", op, "#{${domainEntity}.${util.camelName($field.name)}}");
+		public static final String $util.camelName($field.name)(String op) {
+            return "`$table.name`.`$field.name`" + op + "#{${domainEntity}.${util.camelName($field.name)}}";
 		}
 		#end
 	}
-    #* and条件 *#
-	public static abstract class And extends Where {}
-    #* or条件 *#
-	public static abstract class Or extends Where {}
 
 	#* get set 方法 *#
 	#foreach($field in $table.fieldList)
 	/**
-	 * $!{field.comment}.
-	 * Default: $!{field.defaultValue}
+	 * $!{field.comment}
+	 #if(${field.defaultValue})
+     * 默认值: ${field.defaultValue}
+     #end
 	 */
 	public $util.javaTypeName($field.javaType) $util.getterMethodName($field.name, $field.javaType) {
 		return $util.camelName($field.name);
 	}
 	
 	/**
-	 * $!{field.comment}. 
-	 * Default: $!{field.defaultValue}
+	 * $!{field.comment}
+     #if(${field.defaultValue})
+     * 默认值: ${field.defaultValue}
+     #end
 	 */
 	public void $util.setterMethodName($field.name, $field.javaType) {
 		this.$util.camelName($field.name) = $util.camelName($field.name);
